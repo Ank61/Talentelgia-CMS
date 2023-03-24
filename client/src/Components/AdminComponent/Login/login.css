@@ -1,0 +1,17 @@
+.LoginSection{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.auth-wrapper{
+    position: relative;
+    min-height: 100vh;
+    background-color: #eef5f9;
+}
+.auth-box{
+    box-sizing: border-box;
+}
+.LoginError{
+display:flex ;
+ flex-direction:column;
+}
