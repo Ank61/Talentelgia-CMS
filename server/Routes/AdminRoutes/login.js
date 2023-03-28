@@ -8,6 +8,8 @@ const cookieparser = require('cookie-parser');
 app.use(cookieparser());
 const jwt = require("jsonwebtoken")
 //For creating new user
+
+
 app.post("/create",
     body('email').isEmail(),
     body('password').isLength({ min: 5 }),
@@ -63,15 +65,14 @@ app.post("/",
         const errors = validationResult(request);
 
         if (!errors.isEmpty()) {
-            return response.status(400).json({ errors: errors.array() });
+            return response.status(200).json({ Login : false });
         }
         const { email, password } = request.body
-        const user = await loginModal.findOne({ Email: email }).clone().catch(err => console.log(err))
+        const user = await loginModal.findOne({ Email: email }).clone().catch(err=> response.status(400).send({ login: "Could not find Email" }))
         if (user) {
             const hashedPassword = user.Password;
             console.log(password, hashedPassword)
             bcrypt.compare(password, hashedPassword, async function (err, result) {
-                console.log(result)
                 if (err) {
                     // Handle error
                     console.error(err);
@@ -85,18 +86,13 @@ app.post("/",
                     });
                     response.cookie('access_Token', accessToken, {
                         httpOnly: true,
-                        sameSite: 'Lax'
+                        secure : true,
+                        sameSite: 'none'
                     })
                     //Refresh token for 5 minutes
                     const refreshToken = jwt.sign({ email: user.Email },
-                        process.env.REFRESH_TOKEN_KEY, { expiresIn: '5m' },
+                        process.env.REFRESH_TOKEN_KEY, { expiresIn: '50m' },
                         { algorithm: 'RS256' });
-
-                    response.cookie('refresh_Token', refreshToken, {
-                        httpOnly: true,
-                        sameSite: 'Lax'
-                    });
-
                     //Now save the token in DB
                     const updatedData = await loginModal.updateOne(
                         { Email: email },
@@ -126,13 +122,12 @@ app.post("/",
                 }
                 else {
                     // Password is incorrect
-                    return response.status(400).send({ login: "Could not find password" })
+                    return response.status(200).send({Login: false  })
                 }
             })
         }
         else {
-            console.log(user)
-            response.status(400).send({ login: "Failed" })
+            response.status(200).send({ Login: false })
         }
     })
 

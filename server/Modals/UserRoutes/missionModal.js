@@ -3,7 +3,8 @@ const schema = mongoose.Schema;
 const aboutUs = new schema({
     Modules: [{
         moduleName: {
-            type: String
+            type: String,
+            unique :true,
         },
         data: {
             type: String
@@ -11,12 +12,11 @@ const aboutUs = new schema({
         updatedData: {
             type: String
         },
-    }
-        , {
-            timestamps: {
-                createdAt: 'created_at',
-                updatedAt: 'updated_at'
-            }
+        moduleId : {
+            type: Number,
+            required :true,
+            unique :true,
+        }
     }]
 })
 const aboutUsModal = mongoose.model("AboutU", aboutUs)

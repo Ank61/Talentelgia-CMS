@@ -1,0 +1,24 @@
+.moduleDiv{
+    margin-left: 50px;
+    margin-top: 50px;
+    width :250px;
+    height: 80px;
+    border: 3px solid #27ae96;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    font-size: 18px;
+    cursor: pointer;
+}
+.moduleDiv:hover{
+    background-color: #27ae96;
+    color : white;
+    border: none;
+}
+.Module{
+    display: inline-flex;
+}
+.headingAligned{
+    display: flex;
+}
