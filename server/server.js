@@ -7,7 +7,10 @@ require("dotenv").config();
 const app = express()
 app.use(bodyparser.json({limit: '50mb'}));
 app.use(bodyparser.urlencoded({limit: '50mb', extended: true}));
-app.use(cors()) 
+app.use(cors({origin: 'http://localhost:3000' , methods: ['GET', 'PUT', 'POST'],
+allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+exposedHeaders: ['Content-Range', 'X-Content-Range'],
+credentials: true}))
 const MONGO_KEY = process.env.MONGO_URL
 
 mongoose.connect(MONGO_KEY, {
@@ -20,9 +23,11 @@ mongoose.connect(MONGO_KEY, {
 
 let login = require("./Routes/AdminRoutes/login")
 let mission = require("./Routes/UserRoutes/aboutUs")
+let header = require("./Routes/UserRoutes/header")
 
 app.use("/login" , login)
 app.use("/aboutUs" , mission)
+app.use("/header" , header)
 
 
 app.listen(process.env.BACKEND_PORT,()=> {

@@ -4,26 +4,27 @@ const cookieparser = require('cookie-parser');
 const loginModal = require("../Modals/Authentication/loginModal")
 app.use(cookieparser());
 const jwt = require("jsonwebtoken")
-const middleware = (request, response, next) => {
-    if (request.cookies?.access_Token && request.cookies?.refresh_Token) {
+
+const middleware = async(request, response, next) => {
+    if (request.cookies?.access_Token ) {
         const access_Token = request.cookies.access_Token;
-        const refresh_Token = request.cookies.refresh_Token;
+
         //check the access token expiraiton 
         //check the expiration of refresh token
-        jwt.verify(refresh_Token, process.env.REFRESH_TOKEN_KEY, async function (err, decoded) {
+        const checkEmail = jwt.decode(access_Token)
+        const getUser = await loginModal.findOne({ Email: checkEmail.email }).catch(err =>
+            response.status(400).send("Unauthorised "))
+            if(getUser){
+                const refresh_Token = getUser.Token
+              jwt.verify(refresh_Token, process.env.REFRESH_TOKEN_KEY, async function (err, decoded) {
             if (err) {
                 if (err.message == "invalid signature") {
                     return response.status(400).send("Unauthorised Refresh token")
                 }
                 else{
-                //Refresh token expired logout here 
-                return response.status(400).send("Logout")
+                return response.status(200).send("Logout")
                 }
                 }
-                  //Thre is no error with refresh token and refresh token is valid
-                const user = await loginModal.findOne({ Token: refresh_Token }).catch(err => {
-                return response.status(400).send("Searching refresh token",err) })
-                if (user) {
                     jwt.verify(access_Token, process.env.ACCESS_TOKEN_KEY, async function (err, decoded) {
                         if (err) {
                             if (err.message == "invalid signature") {
@@ -37,11 +38,11 @@ const middleware = (request, response, next) => {
                                     response.status(400).send("Unauthorised "))
                                 if (user.Token) {
                                     //Check the refresh token matched the one you gt from db and request
-                                    if (user.Token == request.cookies.refresh_Token) {
                                         const newAccessToken = jwt.sign({ email: decoded.email },
                                             process.env.ACCESS_TOKEN_KEY, {
                                             expiresIn: '3m'
                                         });
+                                        console.log("Access token regenrated : " )
                                         response.cookie('access_Token', newAccessToken, {
                                             httpOnly: true,
                                             sameSite: 'Lax'
@@ -50,10 +51,6 @@ const middleware = (request, response, next) => {
                                         //give tick here
                                        // return response.status(400).send("Token regerated")
                                     }
-                                    else {
-                                        return response.status(400).send("Not equal ")
-                                    }
-                                }
                                 else {
                                     //Could not find email that means dont generate the token in this case
                                     return response.status(400).send("Unauthorised Email")
@@ -66,11 +63,11 @@ const middleware = (request, response, next) => {
                         }
                     })
                 }
-                else{
-                    console.log(user)
-                    return response.status(400).send("Cou;d ot find refresh token")
-                }
-        })
+
+        )}
+        else{
+            return response.status(400).send("Accesss token not valid")
+        }
     }
     else {
         return response.status(400).send("Refresh or access Token not present")
