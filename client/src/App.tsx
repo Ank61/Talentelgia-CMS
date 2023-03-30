@@ -6,6 +6,7 @@ import AboutUs from "./Components/UserComponents/aboutUs";
 import Dashboard from "./Components/AdminComponents/Pages/dashboard";
 import AdminAboutUs from "./Components/AdminComponents/Pages/AboutUs/aboutUs";
 import AboutUsDynamic from "./Components/AdminComponents/Pages/AboutUs/aboutUsModule";
+import Header from "./Components/AdminComponents/Pages/Header/header";
 import './App.css';
 
 
@@ -20,6 +21,7 @@ function App() {
           {/* <Route path="/admin/home" element={<Portal/>}></Route> */}
           <Route path="/admin/dashboard" element={<Dashboard/>}></Route>
           <Route path="/admin/aboutus" element={<AdminAboutUs/>}></Route>
+          <Route path="/admin/header" element={<Header/>}></Route>
           <Route path= {`/admin/aboutus/:id`} element={<AboutUsDynamic/>}></Route>
           {/*Restricted Route*/}
           {/* <Route path="/admin/home" element={<Portal admin={authenticate}/>}></Route> */}

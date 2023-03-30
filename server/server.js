@@ -23,9 +23,11 @@ mongoose.connect(MONGO_KEY, {
 
 let login = require("./Routes/AdminRoutes/login")
 let mission = require("./Routes/UserRoutes/aboutUs")
+let header = require("./Routes/UserRoutes/header")
 
 app.use("/login" , login)
 app.use("/aboutUs" , mission)
+app.use("/header" , header)
 
 
 app.listen(process.env.BACKEND_PORT,()=> {

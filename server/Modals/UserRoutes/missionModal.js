@@ -19,5 +19,6 @@ const aboutUs = new schema({
         }
     }]
 })
+
 const aboutUsModal = mongoose.model("AboutU", aboutUs)
 module.exports = aboutUsModal;

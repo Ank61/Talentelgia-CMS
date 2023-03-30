@@ -15,6 +15,12 @@ function Layout(props : title){
                         <NavLink  to="/admin/dashboard" >Dashboard</NavLink> 
                     </li>
                     <li>
+                        <NavLink  to="/admin/header" >Header</NavLink> 
+                    </li>
+                    <li>
+                        <NavLink  to="/admin/footer" >Footer</NavLink> 
+                    </li>
+                    <li>
                       <NavLink  to="/admin/aboutus" >About Us</NavLink>
                     </li>
                     <li>

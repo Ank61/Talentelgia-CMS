@@ -30,14 +30,7 @@ app.post("/update",middleware,
             return response.status(200).send("Could not find")
         }
     })
-app.post("/createModule",middleware,
-    check('moduleId')
-        .notEmpty()
-        .withMessage("Kindly enter moduleID")
-        .isLength({ min: 1, max: 6 })
-        .withMessage("ModuleId must atleast 1 or not be greater than 6 digits")
-        .matches(/^[0-9]+$/)
-        .withMessage('Enter Numbers only'),
+app.post("/createModule",
     async (request, response) => {
         const errors = validationResult(request);
         try {
@@ -50,12 +43,28 @@ app.post("/createModule",middleware,
             else {
                 const data = request.body.data;
                 const moduleName = request.body.moduleName;
-                const moduleId = request.body.moduleId;
-                const updatedResponse = await aboutUsModal.findOneAndUpdate({},
-                    { $push: { Modules: { moduleName: `${moduleName}`, data: `${data}`, moduleId: `${moduleId}` } } },
+                const forModuleId = await aboutUsModal.find({}).clone().catch(err => response.status(400).send("Erro"))
+               
+                if(forModuleId.length>0){
+                    const totalLengthIndex = forModuleId[0].Modules.length;
+                    const lastItemIndex = totalLengthIndex-1;
+                    const getModuleId = forModuleId[0].Modules[lastItemIndex]
+                    const updatedResponse = await aboutUsModal.findOneAndUpdate({},
+                    { $push: { Modules: { moduleName: `${moduleName}`, data: `${data}`, moduleId: `${getModuleId.moduleId +1}` } } },
                     { new: true }
                 ).exec()
                 return response.status(200).send(updatedResponse)
+                }
+                else{
+                    //create new
+                const updatedResponse = new aboutUsModal({Modules : [{
+                    moduleId :1,
+                    data : "",
+                    moduleName : `${moduleName}`
+                }]})
+                await updatedResponse.save();
+                return response.status(200).send(updatedResponse);
+                }
             }
         }
         catch (err) {
@@ -77,4 +86,16 @@ app.post("/createModule",middleware,
         }
     })
 
+    app.post("/delete" , async(request,response)=>{
+        try{
+        const Id = request.body.moduleId;
+        const result = await aboutUsModal.findOneAndUpdate({},
+                { $pull: { Modules: { moduleId: Id } } }, 
+                { new: true }).exec();
+        return response.status(200).send(result)
+        }
+        catch(err){
+            return response.status(400).send(err) 
+        }
+    })
 module.exports = app;

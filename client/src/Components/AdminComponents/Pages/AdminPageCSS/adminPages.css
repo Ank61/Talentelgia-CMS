@@ -22,3 +22,23 @@
 .headingAligned{
     display: flex;
 }
+.AboutUsMainDiv{
+    margin-left:12%;
+    margin-right :12%
+}
+
+.rotate{
+    margin-left :50px;
+    font-size : 50px !important;
+    color : rgb(112, 106, 106);
+    transform: rotate(90deg);
+    transform-origin: top left;
+}
+.stackedDiv{
+    color :  rgb(112, 106, 106);
+    font-size: 20px;
+}
+.stackedDiv:hover{
+    color : rgb(214, 33, 33) !important;
+    cursor: pointer;
+}
