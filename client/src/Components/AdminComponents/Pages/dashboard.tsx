@@ -12,7 +12,7 @@ function Dashboard() {
     return (
         <>
             <div className="mainDiv">
-                <Layout title="Dashboard" />
+                <Layout title="Dashboard" moduleName=""/>
             </div>
             <div className="contentDiv">
                 <h3 style={{ textAlign: "center" }}>Coming Soon</h3>
