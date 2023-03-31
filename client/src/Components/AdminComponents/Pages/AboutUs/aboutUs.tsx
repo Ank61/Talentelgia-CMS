@@ -64,7 +64,7 @@ function AdminAboutUs() {
     return (
         <>
             <div className="mainDiv">
-                <Layout title="About Us" />
+                <Layout title="About Us" moduleName=""/>
             </div>
             <div className="contentDiv">
                 <h3 style={{ textAlign: "center" }}>About us </h3>

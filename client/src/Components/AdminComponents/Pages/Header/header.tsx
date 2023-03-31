@@ -81,7 +81,7 @@ function handleDiv(){
     return (
         <>
             <div className="mainDiv">
-                <Layout title="Header" />
+                <Layout title="Header" moduleName=""/>
             </div>
             <div className="contentDiv">
                 <Button variant="secondary" style={{ marginLeft: 8, marginTop: 4 }} onClick={() => handleDiv()}>Add Div</Button>

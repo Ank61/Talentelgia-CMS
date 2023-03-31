@@ -3,12 +3,13 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import "./layout.css";
 type title = {
     title : String //We have already header comoponent!
+    moduleName : String
 }
 function Layout(props : title){
     return(
         <>
             <div className="sidebar">
-                <h3 style={{marginLeft : 60}}>Talentelgia</h3>
+                <h3 style={{marginLeft : 10}}>Talentelgia</h3>
                 <div className="pages">
                 <ul>
                     <li>
@@ -47,7 +48,8 @@ function Layout(props : title){
             <div className="bodyDiv">
                 <div className="headerDiv">
                 <ChevronLeftIcon style={{fontSize : 32}}/> &nbsp;
-                  {props.title}
+                  {props.title} 
+                  <span style={{fontSize : 25 ,color : '#5d7288',marginLeft : 80}}>{props.moduleName}</span>
                 </div>
             </div>
         </>
